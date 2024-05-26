@@ -20,14 +20,15 @@ class Human():
             photon_beam: a list containing Photon class elements
         """
         no_photons = len(photon_beam)
-        # Generate base
-        base_val = self.randomize_number(no_photons)
-        # Convert base to binary str with preceding 0s
-        self.base = self.convert_decimal_to_binary_str(base_val,no_photons)
+        if self.base is None or len(self.base) != no_photons:
+            # Generate base
+            base_val = self.randomize_number(no_photons)
+            # Convert base to binary str with preceding 0s
+            self.base = self.convert_decimal_to_binary_str(base_val,no_photons)
         key = ''
         for i,photon in enumerate(photon_beam):
             # Simulate the possible malfunction of the detector
-            detector_malfunction = self.device_malfunction(1 - self.detector_efficiency)
+            detector_malfunction = self.device_malfunction(100 - self.detector_efficiency)
             if detector_malfunction:
                 # Detector failed, randomize whether it changed the base or the value of the photon
                 value_change = self.randomize_number(1)
@@ -38,6 +39,7 @@ class Human():
             measurement = self.measure_photon(photon,int(self.base[i]))
             key = key + str(measurement)
         self.key = key
+        self.key_length = len(key)
     def measure_photon(self,photon: Photon,measurement_base:int):
         """
         Measures the bit contained in the photon
@@ -57,20 +59,22 @@ class Human():
         Returns:
             photon_beam: a list containing Photon class elements
         """
-        # Generate key
-        key_val = self.randomize_number(self.key_length)
-        # Convert key to binary str with preceding 0s
-        self.key = self.convert_decimal_to_binary_str(key_val,self.key_length)
-        # Generate base
-        base_val = self.randomize_number(self.key_length)
-        # Convert base to binary str with preceding 0s
-        self.base = self.convert_decimal_to_binary_str(base_val,self.key_length)
+        if self.key is None:
+            # Generate key
+            key_val = self.randomize_number(self.key_length)
+            # Convert key to binary str with preceding 0s
+            self.key = self.convert_decimal_to_binary_str(key_val,self.key_length)
+        if self.base is None:
+            # Generate base
+            base_val = self.randomize_number(self.key_length)
+            # Convert base to binary str with preceding 0s
+            self.base = self.convert_decimal_to_binary_str(base_val,self.key_length)
         photon_beam = []
         for i in range(self.key_length):
             # Create a photon with each base and key bit value
             photon = Photon(int(self.base[i]),int(self.key[i]))
             # Simulate the possible malfunction of the emitter
-            emitter_malfunction = self.device_malfunction(1 - self.emitter_efficiency)
+            emitter_malfunction = self.device_malfunction(100 - self.emitter_efficiency)
             if emitter_malfunction:
                 # Emitter failed, randomize whether it changed the base or the value of the photon
                 value_change = self.randomize_number(1)
@@ -144,5 +148,4 @@ def main():
     return 0
 
 if __name__=='__main__':
-    for i in range(20):
-        main()
+    main()
