@@ -1,8 +1,14 @@
+"""
+This module contains the class Human
+"""
 from qiskit import QuantumCircuit,transpile
 from qiskit_aer import AerSimulator
 from photon import Photon
 
 class Human():
+    """
+    Class which contains functions of a node ( a person ) in quantum network
+    """
     def __init__(self,
                 key_length: int = 1,
                 emitter_efficiency: float = 100.0,
@@ -85,6 +91,9 @@ class Human():
             photon_beam.append(photon)
         return photon_beam
     def convert_decimal_to_binary_str(self,decimal_number:int,number_of_bits:int):
+        """
+        Converts decimal to a binary number as a str with all the preceding 0s added
+        """
         binary = str(bin(decimal_number))[2:]
         new_str = ''
         if len(binary) != number_of_bits:
@@ -132,19 +141,9 @@ class Human():
 
 
 def main():
-    key_length = 28
-    Alice = Human(key_length,emitter_efficiency=0)
-    Bob = Human()
-    photon_beam = Alice.send()
-    Bob.receive(photon_beam)
-    print(f"Alice's key: {Alice.key}\nBob's key: {Bob.key}")
-    cnt=0
-    alice_key = Alice.key
-    bob_key = Bob.key
-    for i in range(key_length):
-        if alice_key[i] == bob_key[i]:
-            cnt+=1
-    print(f'Similarity percentage: {round(cnt/key_length,2)*100}%')
+    """
+    Empty main
+    """
     return 0
 
 if __name__=='__main__':

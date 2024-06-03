@@ -1,8 +1,13 @@
+"""
+This module contains class Simulation which allows to easily simulate BB84 protocol
+"""
 from human import Human
-from scipy.stats import mode
-import numpy as np
+
 
 class Simulation():
+    """
+    Class which uses Human to simulate BB84
+    """
     def __init__(self,
                 alice : dict() = {"emitter_efficiency":100},
                 bob : dict() = {"detector_efficiency":100},
